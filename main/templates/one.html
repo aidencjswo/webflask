@@ -5,8 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    li {
+        list-style-type: none;
+
+    }
+    .title{
+        size : 40px;
+    }
+</style>
 <body>
     <div>
+        <h4 class = "title">퀴즈 목록이외다.</h4>
         <ul>
             {% for quiz in quizs %}
                 <li>{{ quiz[0] }}</li>

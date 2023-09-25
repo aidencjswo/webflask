@@ -5,16 +5,16 @@ import mysql.connector
 
 app = Flask(__name__)
 
+config = {
+'user':'aidencjswo',
+'password':'1234',
+'host':'121.131.135.84',
+'port':'3306',
+'database':'sample'
+}
 def connect_db_get_quiz():
     print("퀴즈 가져오기 실행되었음")
 
-    config = {
-    'user':'aidencjswo',
-    'password':'1234',
-    'host':'121.131.135.84',
-    'port':'3306',
-    'database':'sample'
-    }
     connection = mysql.connector.connect(**config)
     query = "select * from quiz"
     #커서 생성
@@ -36,9 +36,14 @@ def index():
 
 @app.route('/one')
 def one():
-
     random_number = random.randint(1, 100)
     return render_template('one.html',quizs = connect_db_get_quiz())
+
+@app.route('/two')
+def two():
+    random_number = random.randint(1, 100)
+    return render_template('two.html',quizs = connect_db_get_quiz())
+
 if __name__ == '__main__':
     print('server start complete')
     app.run(port=5000)

@@ -5,9 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>couple quiz</title>
 </head>
+<style>
+    body{
+        background-color: #E5CFF7;
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 100vh;
+    }
+    *{
+        text-decoration: none;
+    }
+    #title{
+        font-size : 25px;
+        font-weight: 900;
+    }
+    #one{
+        font-size: 20px;
+        color : black;
+        font-weight: 900;
+    }
+    #one:hover {
+        font-size : 23px;
+    }
+    #two{
+        font-size: 20px;
+        color : black;
+        font-weight: 900;
+    }
+    #two:hover{
+        font-size : 23px;
+    }
+    div{
+        width : 130px;
+        height : 130px;
+        text-align: center;
+        display : flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid gray;
+        cursor: pointer;
+    }
+</style>
 <body>
-    <div>퀴즈 목록</div>
-    <div>이건 파이썬 Flask 서버야</div>
-    <a href="/one">ㅋㅋ</a>
+    <div onclick="navigateTo('/one')">
+        <a href="/one" id="one">기출문제</a>
+    </div>
+
+    <div onclick="navigateTo('/two')">
+        <a href="/two" id="two">포도송이</a>
+    </div>
+
+    <script>
+        function navigateTo(path) {
+            window.location.href = path;
+        }
+    </script>
 </body>
 </html>
