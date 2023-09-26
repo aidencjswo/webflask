@@ -47,13 +47,15 @@ def index():
 
 @app.route('/one')
 def one():
-    random_number = random.randint(1, 100)
     return render_template('one.html',quizs = connect_db_get_quiz())
 
 @app.route('/two')
 def two():
-    random_number = random.randint(1, 100)
     return render_template('two.html',cnt = get_achivement())
+
+@app.route('/three')
+def three():
+    return render_template('three.html')
 
 if __name__ == '__main__':
     print('server start complete')

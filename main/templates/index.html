@@ -12,6 +12,8 @@
         align-items: center;
         justify-content: space-evenly;
         height: 100vh;
+        width : 50vw;
+        margin : 0 auto;
     }
     *{
         text-decoration: none;
@@ -36,6 +38,15 @@
     #two:hover{
         font-size : 23px;
     }
+
+    #three{
+        font-size: 20px;
+        color : black;
+        font-weight: 900;
+    }
+    #three:hover{
+        font-size : 23px;
+    }
     div{
         width : 130px;
         height : 130px;
@@ -49,14 +60,15 @@
     }
 </style>
 <body>
+    <div onclick="navigateTo('/three')">
+        <a href="/three" id="three">업다운</a>
+    </div>
     <div onclick="navigateTo('/one')">
         <a href="/one" id="one">기출문제</a>
     </div>
-
     <div onclick="navigateTo('/two')">
         <a href="/two" id="two">포도송이</a>
     </div>
-
     <script>
         function navigateTo(path) {
             window.location.href = path;
