@@ -49,12 +49,6 @@
         left: 50%; /* 가운데 정렬을 위해 왼쪽으로 이동 */
         transform: translateX(-50%) rotate(-45deg); /* 가운데 정렬 및 회전 설정 */
     }
-
-<<<<<<< HEAD
-    .idx1{
-        background-color: purple;
-    }
-
     .centered-text {
         text-align: center;
         position: absolute;
@@ -72,10 +66,28 @@
         font-weight:800;
     }
 </style>
-<script>
-
-</script>
 <body>
+    <script>
+        window.onload = function(){
+            var cnt = document.getElementById('cnt').getAttribute('value')
+    
+            console.log(cnt)
+    
+            var grape = document.getElementsByClassName('grape')
+        
+            for(var i=0;i<cnt;i++){
+                if(cnt<10){
+                    grape[i].style.backgroundColor = 'purple'
+                }else{
+                    break;
+                }
+            }
+        }
+
+    </script>
+    <form type="hidden">
+        <input type="hidden" id="cnt" value={{cnt}}>
+    </form>
     <div class="grapes">
         <div class="row">
             <div class="grape__leaf"></div>
@@ -100,7 +112,6 @@
         <!-- 가운데에 글씨 추가 -->
         <div class="centered-text">
             <span class="span1">Collect grape seeds!</span>
-            <span class="span2">comming soon!</span>
         </div>
     </div>
 </body>

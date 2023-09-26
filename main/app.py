@@ -30,6 +30,17 @@ def connect_db_get_quiz():
 
     return result
 
+def get_achivement():
+    print('ㅇ')
+    connection = mysql.connector.connect(**config)
+    query = "select cnt from sample.achievement_rate where seq1 = 'test';"
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result[0][0]
+    
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -42,7 +53,7 @@ def one():
 @app.route('/two')
 def two():
     random_number = random.randint(1, 100)
-    return render_template('two.html',quizs = connect_db_get_quiz())
+    return render_template('two.html',cnt = get_achivement())
 
 if __name__ == '__main__':
     print('server start complete')
