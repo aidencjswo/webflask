@@ -9,11 +9,12 @@
     body{
         background-color: #E5CFF7;
         display:flex;
-        align-items: center;
-        justify-content: space-evenly;
+        align-content: center;
+        justify-content: nomal;
         height: 100vh;
-        width : 50vw;
+        width : 80vw;
         margin : 0 auto;
+        flex-wrap: wrap;
     }
     *{
         text-decoration: none;
@@ -57,6 +58,7 @@
         justify-content: center;
         border: 2px solid gray;
         cursor: pointer;
+        margin : 2px;
     }
 </style>
 <body>
@@ -68,6 +70,9 @@
     </div>
     <div onclick="navigateTo('/two')">
         <a href="/two" id="two">포도송이</a>
+    </div>
+    <div onclick="navigateTo('/four')">
+        <a href="/four" id="two">comming soon!</a>
     </div>
     <script>
         function navigateTo(path) {
