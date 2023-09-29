@@ -59,45 +59,48 @@
         stopButton.addEventListener('click', stopTimer);
 
         function startTimer() {
-            startButton.disabled = true
-            setTimeout(() => {
-                console.log('2')
-                const tempDiv = document.createElement('div')
-                tempDiv.className = 'modal'
-                const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
-
-                for (let i = numbers.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
-                }
-                // 숫자 버튼 생성
-                numbers.forEach((number, index) => {
-                    const numberButton = document.createElement('div');
-                    numberButton.className = 'number';
-                    numberButton.textContent = number;
-                    numberButton.addEventListener('click', () => {
-
-                        if (parseInt(numberButton.textContent) === currentNumber) {
-                            console.log(numberButton.textContent)
-                            numberButton.style.backgroundColor = '#2ecc71';
-                            numberButton.style.cursor = 'default';
-                            console.log(currentNumber)
-                            if(currentNumber == 5){
-                                console.log('게임끝')
-                                stopTimer()
+            if(numberContainer.children.length != 0){
+                numberContainer.remove()
+            }else{
+                console.log(123)
+                startButton.disabled = true
+                setTimeout(() => {
+                    console.log('2')
+                    const tempDiv = document.createElement('div')
+                    tempDiv.className = 'modal'
+                    const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
+        
+                    for (let i = numbers.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+                    }
+                    // 숫자 버튼 생성
+                    numbers.forEach((number, index) => {
+                        const numberButton = document.createElement('div');
+                        numberButton.className = 'number';
+                        numberButton.textContent = number;
+                        numberButton.addEventListener('click', () => {
+        
+                            if (parseInt(numberButton.textContent) === currentNumber) {
+                                console.log(numberButton.textContent)
+                                numberButton.style.backgroundColor = '#2ecc71';
+                                numberButton.style.cursor = 'default';
+                                console.log(currentNumber)
+                                if(currentNumber == 5){
+                                    console.log('게임끝')
+                                    stopTimer()
+                                }
+                                currentNumber++
                             }
-                            currentNumber++
-                        }
+                        });
+                        numberContainer.appendChild(numberButton);
                     });
-                    numberContainer.appendChild(numberButton);
-                });
-                startTime = Date.now();
-            timerInterval = setInterval(updateTimer, 10); // 10ms마다 업데이트
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            }, 3000);
-            
-            
+                    startTime = Date.now();
+                timerInterval = setInterval(updateTimer, 10); // 10ms마다 업데이트
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                }, 3000);
+            }
         }
 
         function stopTimer() {
