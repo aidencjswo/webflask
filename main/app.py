@@ -57,6 +57,10 @@ def two():
 def three():
     return render_template('three.html')
 
+@app.route('/four')
+def four():
+    return render_template('four.html')
+
 if __name__ == '__main__':
     print('server start complete')
     app.run(port=5000,host='0.0.0.0')

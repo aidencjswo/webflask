@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
@@ -9,11 +10,13 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .number {
             width: 50px;
             height: 50px;
@@ -27,95 +30,135 @@
             cursor: pointer;
             user-select: none;
         }
+
         .modal {
-            height : 100vh;
-            width : 100vw;
-            background-color: black;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modalText{
+            font-size : 80px;
+            font-weight: 900;
+        }
+
+        #startButton {
+            width: 80px;
+            height: 50px;
+            display: block;
+            margin: 0 auto;
+        }
+        #number-container{
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        #timer{
+            font-size : 20px;
         }
     </style>
 </head>
+
 <body>
-    <div id = 'main-container'>
+    <div id='main-container'>
         <h1>숫자 클릭 게임</h1>
-        <p id="timer">00.000</p>
+        <p id="timer">00.00</p>
         <button id="startButton">시작</button>
         <div class="container" id="number-container"></div>
-        </div>
+    </div>
     <script>
-        const numberContainer = document.getElementById('number-container');
         const mainContainer = document.getElementById('main-container');
+        const numberContainer = document.getElementById('number-container');
         let currentNumber = 1;
 
-        let totalCnt = 20;
+        let totalCnt = 3;
 
 
         let timerInterval;
         let startTime;
         const timerElement = document.getElementById('timer');
         const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
 
         startButton.addEventListener('click', startTimer);
-        stopButton.addEventListener('click', stopTimer);
-
         function startTimer() {
-            if(numberContainer.children.length != 0){
-                numberContainer.remove()
-            }else{
-                console.log(123)
-                startButton.disabled = true
-                setTimeout(() => {
-                    console.log('2')
-                    const tempDiv = document.createElement('div')
-                    tempDiv.className = 'modal'
-                    const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
-        
-                    for (let i = numbers.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
-                    }
-                    // 숫자 버튼 생성
-                    numbers.forEach((number, index) => {
-                        const numberButton = document.createElement('div');
-                        numberButton.className = 'number';
-                        numberButton.textContent = number;
-                        numberButton.addEventListener('click', () => {
-        
-                            if (parseInt(numberButton.textContent) === currentNumber) {
-                                console.log(numberButton.textContent)
-                                numberButton.style.backgroundColor = '#2ecc71';
-                                numberButton.style.cursor = 'default';
-                                console.log(currentNumber)
-                                if(currentNumber == 5){
-                                    console.log('게임끝')
-                                    stopTimer()
-                                }
-                                currentNumber++
-                            }
-                        });
-                        numberContainer.appendChild(numberButton);
-                    });
-                    startTime = Date.now();
-                timerInterval = setInterval(updateTimer, 10); // 10ms마다 업데이트
-                startButton.disabled = true;
-                stopButton.disabled = false;
-                }, 3000);
-            }
-        }
+            currentNumber = 1;
+            startButton.disabled = true;
+            const tempDiv = document.createElement('div');
+            const modalText = document.createElement('span');
+            modalText.className = 'modalText'
+            modalText.innerText = '3'; // 초기 값 설정
+            tempDiv.appendChild(modalText);
+            tempDiv.className = 'modal';
+            mainContainer.appendChild(tempDiv);
+            const numbers = Array.from({ length: totalCnt }, (_, i) => i + 1);
 
+            for (let i = numbers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+            }
+
+            // 숫자 버튼 생성
+            numbers.forEach((number, index) => {
+                startButton.style.display = 'none'
+                const numberButton = document.createElement('div');
+                numberButton.className = 'number';
+                numberButton.textContent = number;
+                numberButton.addEventListener('click', () => {
+                    if (parseInt(numberButton.textContent) === currentNumber) {
+                        console.log(numberButton.textContent);
+                        numberButton.style.backgroundColor = '#2ecc71';
+                        numberButton.style.cursor = 'default';
+                        console.log(currentNumber);
+                        if (currentNumber == totalCnt) {
+                            console.log('게임끝');
+                            numberContainer.innerHTML = '';
+                            startButton.style.display = 'block'
+                            stopTimer();
+                        }
+                        currentNumber++;
+                    }
+                });
+                numberContainer.appendChild(numberButton);
+            });
+
+            // 모달 텍스트 감소 함수
+            function decreaseModalText() {
+                const currentValue = parseInt(modalText.innerText);
+                if (currentValue > 1) {
+                    modalText.innerText = (currentValue - 1).toString();
+                    setTimeout(decreaseModalText, 1000); // 1초마다 호출하여 감소
+                } else {
+                    tempDiv.remove();
+                    startTime = Date.now();
+                    timerInterval = setInterval(updateTimer, 10); // 10ms마다 업데이트
+                    startButton.disabled = true;
+                }
+            }
+
+            setTimeout(decreaseModalText, 1000); // 1초마다 호출하여 모달 텍스트 감소
+        }
         function stopTimer() {
             clearInterval(timerInterval);
             startButton.disabled = false;
-            stopButton.disabled = true;
         }
 
         function updateTimer() {
             const currentTime = Date.now();
             const elapsedTime = currentTime - startTime;
             const seconds = Math.floor(elapsedTime / 1000);
-            const milliseconds = (elapsedTime % 1000).toString().padStart(3, '0');
+            const milliseconds = (elapsedTime % 1000).toString().padStart(3, '0').slice(0, 2);
             timerElement.textContent = `${seconds}.${milliseconds}`;
         }
+
+        
+
     </script>
 </body>
+
 </html>
