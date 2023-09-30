@@ -1,7 +1,9 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,jsonify,request
 import test
 import random
 import mysql.connector
+import datetime
+import time
 
 app = Flask(__name__)
 
@@ -31,13 +33,46 @@ def connect_db_get_quiz():
     return result
 
 def get_achivement():
-    print('ㅇ')
     connection = mysql.connector.connect(**config)
     query = "select cnt from sample.achievement_rate where seq1 = 'test';"
     cursor = connection.cursor()
     cursor.execute(query)
     result = cursor.fetchall()
     return result[0][0]
+    
+
+def connect_db_get_number_game_score():
+    print('가져오기')
+    connection = mysql.connector.connect(**config)
+    query = "SELECT score, player FROM sample.numgame WHERE score = (SELECT MIN(score) FROM sample.numgame);"
+    #커서 생성
+    cursor = connection.cursor()
+    #쿼리 실행
+    cursor.execute(query)
+    #테이블 조회
+    result = cursor.fetchall()
+    #랜덤번호 출력
+    connection.close()
+
+    temp_obj = {
+        "score":result[0][0],
+        "player":result[0][1]
+    }
+
+    return temp_obj
+
+def insert_db_number_game_score(player,score):
+    print('인서트실행')
+    connection = mysql.connector.connect(**config)
+    date = time.localtime()
+    date_str = str(date.tm_year)+"/"+str(date.tm_mon)+"/"+str(date.tm_mday)
+    data_to_insert = (score['score'],player,date_str)
+    cursor = connection.cursor()
+    query = "insert into sample.numgame (score,player,play_date) values (%s,%s,%s);"
+    cursor.execute(query,data_to_insert)
+    connection.commit()
+    cursor.close()
+    connection.close()
     
 
 
@@ -59,7 +94,24 @@ def three():
 
 @app.route('/four')
 def four():
-    return render_template('four.html')
+    return render_template('four.html',score = connect_db_get_number_game_score())
+
+
+@app.route('/number/update', methods=['POST'])
+def number_update():
+    best_score = connect_db_get_number_game_score()
+    current_score = request.json  # JSON 형식의 요청 데이터를 가져옵니다.
+    print(current_score['player'])
+    insert_db_number_game_score(current_score['player'],current_score)
+
+    if float(current_score['score']) < float(best_score['score']):
+        # 요청 데이터에서 필요한 작업을 수행합니다.
+        print("신기록!")
+        data = {"message":"신기록입니다!"}
+        return jsonify(data)
+    else:
+        data = {"message":"다시 도전하세요!"}
+        return jsonify(data)
 
 if __name__ == '__main__':
     print('server start complete')
