@@ -5,7 +5,7 @@ import mysql.connector
 import datetime
 import time
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 config = {
 'user':'aidencjswo',
