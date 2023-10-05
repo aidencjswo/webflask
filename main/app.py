@@ -44,7 +44,7 @@ def get_achivement():
 def connect_db_get_number_game_score():
     print('가져오기')
     connection = mysql.connector.connect(**config)
-    query = "SELECT score, player FROM sample.numgame WHERE score = (SELECT MIN(score) FROM sample.numgame);"
+    query = "select n.score,n.player,n.rownumber from(select @rownum := @rownum + 1 rownumber, n.* from sample.numgame n,(select @rownum := 0) rownum order by score) n where n.rownumber <= 2;"
     #커서 생성
     cursor = connection.cursor()
     #쿼리 실행
@@ -55,9 +55,13 @@ def connect_db_get_number_game_score():
     connection.close()
 
     temp_obj = {
-        "score":result[0][0],
-        "player":result[0][1]
+        "score1":result[0][0],
+        "player1":result[0][1],
+        "score2":result[1][0],
+        "player2":result[1][1]
     }
+
+    print(temp_obj)
 
     return temp_obj
 
@@ -104,7 +108,7 @@ def number_update():
     print(current_score['player'])
     insert_db_number_game_score(current_score['player'],current_score)
 
-    if float(current_score['score']) < float(best_score['score']):
+    if float(current_score['score']) < float(best_score['score1']):
         # 요청 데이터에서 필요한 작업을 수행합니다.
         print("신기록!")
         data = {"message":"신기록입니다!"}
