@@ -29,15 +29,34 @@
         animation: vibration 0.1s infinite;
     }
 
+    .mango-jump {
+        animation-name: bounce;
+        animation-duration: 0.5s;
+        animation-direction: alternate;
+        animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+        animation-iteration-count: infinite;
+    }
+
     @keyframes vibration {
         from {
-            transform: rotate(1deg);
+            transform: rotate(5deg);
         }
 
         to {
             transform: rotate(-1deg);
         }
     }
+
+    @keyframes bounce {
+        from {
+            transform: translateY(0) scale(1);
+        }
+
+        to {
+            transform: translateY(50px) scale(1, 0.7);
+        }
+    }
+
 
     .grapes {
         display: flex;
@@ -168,6 +187,7 @@
             var mango = document.getElementById("mango-container")
             var body = document.body;
             var scale = 0;
+            let startY = window.innerHeight / 2;;
 
             for (var i = 0; i < cnt; i++) {
                 if (cnt <= 10) {
@@ -186,12 +206,34 @@
             }
             mango.addEventListener('click', shake)
 
+            mango.addEventListener('touchmove', (e) => {
+                if (startY !== null) {
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = startY - currentY;
+
+                    // 위로 스와이프 이벤트 처리
+                    if (deltaY < 50) { // 예: 50px 이상 위로 스와이프 감지
+                        jump();
+                    }
+                }
+            });
+
             function shake() {
                 mango.style.scale = scale + '%';
                 mango.classList.add("vibration");
                 setTimeout(function () {
                     mango.classList.remove("vibration");
                 }, 500);
+
+            }
+
+            function jump() {
+                mango.style.scale = scale + '%';
+                mango.classList.add("mango-jump");
+                setTimeout(function () {
+                    mango.classList.remove("mango-jump");
+                }, 3000);
+
             }
         }
 
