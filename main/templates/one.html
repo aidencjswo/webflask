@@ -30,12 +30,14 @@
         }
     </script>
     <div>
-        <h4 class = "title">퀴즈 목록이외다.</h4>
-        <ul>
-            {% for quiz in quizs %}
-                <li>{{ quiz[0] }}</li>
-            {% endfor %}
-        </ul>
+        {% if password_correct %}
+        <h4 class = "title">퀴즈 목록입니다!</h4>
+            <ul>
+                {% for quiz in quizs %}
+                    <li>{{ quiz[0] }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 </body>
 </html>
