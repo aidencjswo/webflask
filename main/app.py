@@ -78,6 +78,16 @@ def insert_db_number_game_score(player,score):
     cursor.close()
     connection.close()
     
+def select_db_get_achive_fruits():
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
+    query = "select * from sample.fruits where f_achive = 'o';"
+    cursor.execute(query)
+    connection.commit()
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
 
 
 @app.route('/')
@@ -90,7 +100,7 @@ def one():
 
 @app.route('/two')
 def two():
-    return render_template('two.html',cnt = get_achivement())
+    return render_template('two.html',cnt = get_achivement(),number = "1")
 
 @app.route('/three')
 def three():
