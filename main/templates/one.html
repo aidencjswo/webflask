@@ -16,28 +16,33 @@
 </style>
 <body>
     <script>
-        function getPassword() {
-            var password = prompt("비밀번호를 입력하세요");
-            if (password === "504900") {
-                // 비밀번호가 올바를 경우 이곳에 페이지 이동 코드를 추가할 수 있습니다.
-            } else {
-                alert("못들어옴ㅋㅋ");
-                window.location.href = "/";
-            }
-        }
         window.onload = function(){
+            var flag = false;
+            function getPassword() {
+                var password = prompt("비밀번호를 입력하세요");
+                if (password === "504900") {
+                    // 비밀번호가 올바를 경우 이곳에 페이지 이동 코드를 추가할 수 있습니다.
+                    flag = true;
+                } else {
+                    alert("못들어옴ㅋㅋ");
+                    window.location.href = "/";
+                }
+            }
+            var quizs = document.getElementById('quizs');
             getPassword()
+            if(flag){
+                quizs.style.display = "block"
+            }
+
         }
     </script>
-    <div>
-        {% if password_correct %}
+    <div id = "quizs" style = "display:none">
         <h4 class = "title">퀴즈 목록입니다!</h4>
-            <ul>
-                {% for quiz in quizs %}
-                    <li>{{ quiz[0] }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        <ul>
+            {% for quiz in quizs %}
+                <li>{{ quiz[0] }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>

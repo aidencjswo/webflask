@@ -90,7 +90,7 @@ def index():
 
 @app.route('/one')
 def one():
-    return render_template('one.html',quizs = connect_db_get_quiz())
+    return render_template('one.html',password_correct=False ,quizs = connect_db_get_quiz())
 
 @app.route('/two')
 def two():
