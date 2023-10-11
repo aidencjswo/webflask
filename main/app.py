@@ -15,8 +15,6 @@ config = {
 'database':'sample'
 }
 def connect_db_get_quiz():
-    print("퀴즈 가져오기 실행되었음")
-
     connection = mysql.connector.connect(**config)
     query = "select * from quiz"
     #커서 생성
@@ -42,7 +40,6 @@ def get_achivement():
     
 
 def connect_db_get_number_game_score():
-    print('가져오기')
     connection = mysql.connector.connect(**config)
     query = "select n.score,n.player,n.rownumber from(select @rownum := @rownum + 1 rownumber, n.* from sample.numgame n,(select @rownum := 0) rownum order by score) n where n.rownumber <= 2;"
     #커서 생성
@@ -61,12 +58,9 @@ def connect_db_get_number_game_score():
         "player2":result[1][1]
     }
 
-    print(temp_obj)
-
     return temp_obj
 
 def insert_db_number_game_score(player,score):
-    print('인서트실행')
     connection = mysql.connector.connect(**config)
     date = time.localtime()
     date_str = str(date.tm_year)+"/"+str(date.tm_mon)+"/"+str(date.tm_mday)
@@ -81,12 +75,12 @@ def insert_db_number_game_score(player,score):
 def select_db_get_achive_fruits():
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
-    query = "select * from sample.fruits where f_achive = 'o';"
+    query = "select f_name from sample.fruits;"
     cursor.execute(query)
-    connection.commit()
     result = cursor.fetchall()
     cursor.close()
     connection.close()
+    return result
     
 
 
@@ -100,7 +94,7 @@ def one():
 
 @app.route('/two')
 def two():
-    return render_template('two.html',cnt = get_achivement(),number = "1")
+    return render_template('two.html',cnt = get_achivement(), fruits = select_db_get_achive_fruits())
 
 @app.route('/three')
 def three():
@@ -115,12 +109,10 @@ def four():
 def number_update():
     best_score = connect_db_get_number_game_score()
     current_score = request.json  # JSON 형식의 요청 데이터를 가져옵니다.
-    print(current_score['player'])
     insert_db_number_game_score(current_score['player'],current_score)
 
     if float(current_score['score']) < float(best_score['score1']):
         # 요청 데이터에서 필요한 작업을 수행합니다.
-        print("신기록!")
         data = {"message":"신기록입니다!"}
         return jsonify(data)
     else:

@@ -24,6 +24,9 @@
         top: 10px;
         left: 10px;
     }
+    .rubberBand{
+        animation: rubberBand 0.5s;
+    }
 
     .vibration {
         animation: vibration 0.1s infinite;
@@ -56,7 +59,39 @@
             transform: translateY(50px) scale(1, 0.7);
         }
     }
+    @keyframes rubberBand {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
 
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.rubberBand {
+  animation-name: rubberBand;
+}
 
     .grapes {
         display: flex;
@@ -81,6 +116,7 @@
         margin: 5px;
         position: relative;
         /* 상대 위치 설정 */
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .grape__leaf {
@@ -182,19 +218,33 @@
     <script>
         window.onload = function () {
             var cnt = document.getElementById('cnt').getAttribute('value')
+            var selectBox = document.getElementById("select-box");
             var grape = document.getElementsByClassName('grape')
             var grapes = document.getElementById("grapes-container")
             var mango = document.getElementById("mango-container")
+            var fruits = document.getElementsByClassName("fruits");
             var body = document.body;
             var scale = 0;
             let startY = window.innerHeight / 2;
-
+            
+            if(cnt >= 10 ){
+                for (var key in grape) {
+                    if (grape.hasOwnProperty(key)) {
+                        var element = grape[key];
+                        element.style.backgroundColor = 'purple'
+                        // 다음 작업 수행
+                    }
+                }
+            }
             for (var i = 0; i < cnt; i++) {
                 if (cnt <= 10) {
                     body.style.backgroundColor = "#E4F1FF"
                     grapes.style.display = 'block';
                     grape[i].style.backgroundColor = 'purple'
+                    selectBox.value = '망고';
+
                 } else if (cnt > 10 && cnt <= 20) {
+                    selectBox.value = '망고';
                     body.style.backgroundColor = "#86A7FF"
                     mango.style.display = 'block';
                     var current_scale = 30
@@ -205,6 +255,8 @@
 
             }
             mango.addEventListener('click', shake)
+            grapes.addEventListener('click', rubberBand)
+
 
             mango.addEventListener('touchmove', (e) => {
                 if (startY !== null) {
@@ -218,6 +270,16 @@
                 }
             });
 
+            function rubberBand() {
+                console.log(grape.length);
+                for(let i=0;i<grape.length;i++){
+                    setTimeout(function () {
+                        grape[i].classList.add("rubberBand");
+                    }, i * 500);
+                    grape[i].classList.remove("rubberBand");
+                };
+            }
+            
             function shake() {
                 mango.style.scale = scale + '%';
                 mango.classList.add("vibration");
@@ -233,20 +295,36 @@
                 setTimeout(function () {
                     mango.classList.remove("mango-jump");
                 }, 3000);
-
             }
-        }
+
+            
+            selectBox.addEventListener("change", (e) => {
+                if(e.target.value == "망고"){
+                    for(let i=0;i<fruits.length;i++){
+                        fruits[i].style.display = "none";
+                    }
+                    mango.style.display = "block";
+                }else if(e.target.value == "포도"){
+                    for(let i=0;i<fruits.length;i++){
+                        fruits[i].style.display = "none";
+                    }
+                    grapes.style.display = "block"
+                }
+            })
+
+        } //window.onload 끝
+        
 
     </script>
-    <div id="select-box">
-        <select>
-            <option>{{number}}</option>
+        <select id = "select-box">
+            {% for fruit in fruits %}
+                <option>{{fruit[0]}}</option>
+            {% endfor%}
         </select>
-    </div>
     <form type="hidden">
         <input type="hidden" id="cnt" value={{cnt}}>
     </form>
-    <div class="grapes" id="grapes-container" style="display:none">
+    <div class="grapes fruits" id="grapes-container" style="display:none">
         <div class="row">
             <div class="grape__leaf"></div>
             <div class="grape idx1"></div>
@@ -272,7 +350,7 @@
             <span class="span1">Collect grape seeds!</span>
         </div>
     </div>
-    <div class="mango" id="mango-container" style="display:none">
+    <div class="mango fruits" id="mango-container" style="display:none">
         <div class="fruit">
             <div class="leaf">
                 <div class="stem">

@@ -27,4 +27,6 @@ def select_db_get_achive_fruits():
 
 obj = select_db_get_achive_fruits()
 
-print(obj)
+for i in obj:
+    print(i[0])
+

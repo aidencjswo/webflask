@@ -15,6 +15,20 @@
     }
 </style>
 <body>
+    <script>
+        function getPassword() {
+            var password = prompt("비밀번호를 입력하세요");
+            if (password === "504900") {
+                // 비밀번호가 올바를 경우 이곳에 페이지 이동 코드를 추가할 수 있습니다.
+            } else {
+                alert("못들어옴ㅋㅋ");
+                window.location.href = "/";
+            }
+        }
+        window.onload = function(){
+            getPassword()
+        }
+    </script>
     <div>
         <h4 class = "title">퀴즈 목록이외다.</h4>
         <ul>
