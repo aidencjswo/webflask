@@ -6,43 +6,84 @@
     <title>Document</title>
 </head>
 <style>
+    body{
+        background-color: #AAE3E2;
+        height: 100vh;
+    }
     li {
+        font-size: 17px;
+        font-family: "Cafe24Dongdong-v2.0";
         list-style-type: none;
 
     }
     .title{
-        size : 40px;
+        font-family: 'SDSamliphopangche_Outline';
+        color: black;
+        font-size : 30px;
+        margin-bottom: 20px;
+        
+    }
+
+    @font-face{
+        font-family: 'SDSamliphopangche_Outline';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        
+
+    }
+    @font-face{
+        font-family: "Cafe24Dongdong-v2.0";
+        src: url('../static/fonts/Cafe24Dongdong-v2.0.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    #quiz-container{
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .text-area{
+        text-align: center;
     }
 </style>
 <body>
     <script>
         window.onload = function(){
-            var flag = false;
-            function getPassword() {
-                var password = prompt("비밀번호를 입력하세요");
-                if (password === "504900") {
-                    // 비밀번호가 올바를 경우 이곳에 페이지 이동 코드를 추가할 수 있습니다.
-                    flag = true;
-                } else {
-                    alert("못들어옴ㅋㅋ");
-                    window.location.href = "/";
-                }
-            }
-            var quizs = document.getElementById('quizs');
-            getPassword()
-            if(flag){
-                quizs.style.display = "block"
-            }
+            // var flag = false;
+            // function getPassword() {
+            //     var password = prompt("비밀번호를 입력하세요");
+            //     if (password === "504900") {
+            //         // 비밀번호가 올바를 경우 이곳에 페이지 이동 코드를 추가할 수 있습니다.
+            //         flag = true;
+            //     } else {
+            //         alert("못들어옴ㅋㅋ");
+            //         window.location.href = "/";
+            //     }
+            // }
+            // var quizs = document.getElementById('quizs');
+            // getPassword()
+            // if(flag){
+            //     quizs.style.display = "block"
+            // }
 
         }
     </script>
-    <div id = "quizs" style = "display:none">
-        <h4 class = "title">퀴즈 목록입니다!</h4>
-        <ul>
+    <div id = "quizs" style = "display:block">
+        <div id = "quiz-container">
+        <div class = "title">퀴즈 목록입니다!</div>
+        <ul class = "text-area">
             {% for quiz in quizs %}
-                <li>{{ quiz[0] }}</li>
+                <li>{{ quiz[0] }}</li><br>
             {% endfor %}
         </ul>
+    </div>
     </div>
 </body>
 </html>
