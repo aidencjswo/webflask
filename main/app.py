@@ -41,7 +41,7 @@ def get_achivement():
 
 def connect_db_get_number_game_score():
     connection = mysql.connector.connect(**config)
-    query = "select n.score,n.player,n.rownumber from(select @rownum := @rownum + 1 rownumber, n.* from sample.numgame n,(select @rownum := 0) rownum order by score) n where n.rownumber <= 2;"
+    query = "select n.score, case when n.player is null then '익명의 사나이' when replace(n.player,' ','') = '' then '익명의 사나이' else n.player end as player ,n.rownumber from(select @rownum := @rownum + 1 rownumber, n.* from sample.numgame n,(select @rownum := 0) rownum order by score) n where rownumber <= 5;"
     #커서 생성
     cursor = connection.cursor()
     #쿼리 실행
@@ -55,7 +55,13 @@ def connect_db_get_number_game_score():
         "score1":result[0][0],
         "player1":result[0][1],
         "score2":result[1][0],
-        "player2":result[1][1]
+        "player2":result[1][1],
+        "score3":result[2][0],
+        "player3":result[2][1],
+        "score4":result[3][0],
+        "player4":result[3][1],
+        "score5":result[4][0],
+        "player5":result[4][1]
     }
 
     return temp_obj
