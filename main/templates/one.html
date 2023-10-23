@@ -77,10 +77,10 @@
     </script>
     <div id = "quizs" style = "display:none">
         <div id = "quiz-container">
-        <div class = "title">퀴즈 목록입니다!</div>
+        <div class = "title">퀴즈 목록입니다!(5번이상 출제시 문제 나가지 않음)</div>
         <ul class = "text-area">
             {% for quiz in quizs %}
-                <li>{{ quiz[0] }}</li><br>
+                <li><span>출제횟수 : {{quiz[7]}}</span><br>{{ quiz[1] }}</li><br>
             {% endfor %}
         </ul>
     </div>

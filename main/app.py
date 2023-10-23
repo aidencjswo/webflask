@@ -1,4 +1,4 @@
-from flask import Flask,render_template,jsonify,request
+from flask import Flask,render_template,jsonify,request,abort
 import test
 import random
 import mysql.connector
@@ -88,7 +88,14 @@ def select_db_get_achive_fruits():
     connection.close()
     return result
     
+blocked_ips = ["167.94.138.125","43.129.39.176","205.210.31.68","46.101.88.175","128.14.237.9"]
 
+@app.before_request
+def block_ip():
+    client_ip = request.remote_addr
+    if client_ip in blocked_ips:
+        # 차단된 IP 주소에서의 요청을 거부
+        abort(403)
 
 @app.route('/')
 def index():
@@ -124,6 +131,8 @@ def number_update():
     else:
         data = {"message":"다시 도전하세요!"}
         return jsonify(data)
+
+
 
 if __name__ == '__main__':
     print('server start complete')
